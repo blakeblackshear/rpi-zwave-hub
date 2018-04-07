@@ -1,0 +1,103 @@
+{
+	"controller": {},
+	"vdevInfo": {},
+	"locations": [{
+		"id": 0,
+		"title": "globalRoom",
+		"user_img": "",
+		"default_img": "",
+		"img_type": ""
+	}],
+	"profiles": [{
+		"id": 1,
+		"role": 1,
+		"login": "admin",
+		"password": "admin",
+		"name": "Administrator",
+		"lang": "en",
+		"color": "#dddddd",
+		"dashboard": [],
+		"interval": 2000,
+		"rooms": [0],
+		"expert_view": true,
+		"hide_all_device_events": false,
+		"hide_system_events": false,
+		"hide_single_device_events": [],
+		"skin": "default",
+		"qrcode": ""
+	}, {
+		"id": 2,
+		"role": 3,
+		"login": "local",
+		"password": "local",
+		"name": "Local User",
+		"lang": "en",
+		"color": "#dddddd",
+		"dashboard": [],
+		"interval": 2000,
+		"rooms": [0],
+		"expert_view": true,
+		"hide_all_device_events": false,
+		"hide_system_events": false,
+		"hide_single_device_events": [],
+		"skin": "default",
+		"qrcode": ""
+	}],
+	"instances": [{
+		"id": 1,
+		"moduleId": "ZWave",
+		"params": {
+			"name": "zway",
+			"port": "/dev/ttyAMA0",
+			"enableAPI": true,
+			"publicAPI": false,
+			"createVDev": true,
+			"config": "config",
+			"translations": "translations",
+			"ZDDX": "ZDDX"
+		},
+		"active": true,
+		"title": "Z-Wave Network Access",
+		"description": "Allows accessing Z-Wave devices from attached Z-Wave transceiver.\n(Added by default)"
+	}, {
+		"id": 2,
+		"moduleId": "Cron",
+		"params": {},
+		"active": true,
+		"title": "System Clock (CRON)",
+		"description": "Scheduler used by other modules\n(Added by default)"
+	}, {
+		"id": 6,
+		"moduleId": "SensorsPolling",
+		"active": true,
+		"title": "Periodical Sensor Polling",
+		"description": "Queries in an adjustable interval all measurement sensors. It can be entered a list of sensors, which should not be queried.\n(Added by default)",
+		"params": {
+			"pollDevsWithBatteries": false,
+			"devices": [],
+			"devicesWithBattery": [],
+			"period": "10"
+		}
+	}, {
+		"id": 7,
+		"moduleId": "BatteryPolling",
+		"active": true,
+		"title": "Battery Polling",
+		"description": "Set up an interval that regularly polls the battery status of a battery devices.\n(Added by default)",
+		"params": {
+			"launchWeekDay": 0,
+			"warningLevel": "20"
+		}
+	}, {
+		"id": 8,
+		"moduleId": "SwitchControlGenerator",
+		"active": true,
+		"title": "Trap events from Remotes and Sensors",
+		"description": "",
+		"params": {
+			"trapNew": true,
+			"banned": [],
+			"generated": []
+		}
+	}]
+ }

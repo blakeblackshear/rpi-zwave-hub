@@ -1,0 +1,6 @@
+<config>
+    <automation-dir>automation</automation-dir>
+    <log-file></log-file>
+    <log-level>0</log-level>
+    <debug-port></debug-port>
+</config>

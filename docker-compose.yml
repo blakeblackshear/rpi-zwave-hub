@@ -1,0 +1,15 @@
+version: "3"
+services:
+  zway:
+    container_name: zway
+    restart: always
+    build:
+      context: zway
+    environment:
+      TZ: "America/Chicago"
+    volumes:
+      - ./zway/storage:/opt/z-way-server/automation/storage/
+    ports:
+      - "127.0.0.1:8083:8083"
+    devices:
+      - "/dev/ttyAMA0:/dev/ttyAMA0"
