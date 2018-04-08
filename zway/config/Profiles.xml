@@ -1,0 +1,77 @@
+<Profiles>
+	<Profile rorg="0xf6" func="0x02" type="0x01" rorgDescription="RPS Telegram" funcDescription="Rocker Switch, 2 Rocker" typeDescription="Light and Blind Control - Application Style 1">
+		<Field offset="0" size="3" name="value1" type="int" description="Rocker 1st Action" short="R1" />
+		<Field offset="3" size="1" name="energyBow" type="bool" description="Energy Bow" short="EB" />
+		<Field offset="4" size="3" name="value2" type="int" description="Rocker 2nd Action" short="R2" />
+		<Field offset="7" size="1" name="secondAction" type="bool" description="2nd Action valid" short="SA" />
+	</Profile>
+
+	<Profile rorg="0xf6" func="0x10" type="0x00" rorgDescription="RPS Telegram" funcDescription="Mechanical Handle" typeDescription="Window Handle">
+		<Field offset="0" size="4" name="windowHandle" type="int" description="Movement of the window handle" short="WIN" />
+	</Profile>
+
+	<Profile rorg="0xf6" func="0x10" type="0x01" rorgDescription="RPS Telegram" funcDescription="Mechanical Handle" typeDescription="Window Handle ERP2">
+		<Field offset="5" size="1" name="Handle coding" type="bool" description="Signalize window handle coding" short="HC" />
+		<Field offset="0" size="4" name="handleValue" type="int" description="Value of the 4MSB of the Data field of ERP1 coding" short="HVL" />
+	</Profile>
+
+	<Profile rorg="0xd5" func="0x00" type="0x01" rorgDescription="1BS Telegram" funcDescription="Contacts and Switches" typeDescription="Single Input Contact">
+		<Field offset="4" size="1" name="learnMode" type="bool" description="Learn pressed" short="LRN" inverted="true" />
+		<Field offset="7" size="1" name="contact" type="bool" description="Contact" short="CO" inverted="true" />
+	</Profile>
+
+	<Profile rorg="0xa5" func="0x04" type="0x01" rorgDescription="4BS Telegram" funcDescription="Temperature and Humidity Sensor" typeDescription="Range 0°C to +40°C and 0% to 100%">
+		<Field offset="8" size="8" name="humidity" type="float" description="Humidity" short="HUM" shift="0" factor="0.4" />
+		<Field offset="16" size="8" name="temperature" type="float" description="Temperature" short="TMP" shift="0" factor="0.16" />
+		<Field offset="28" size="1" name="learnMode" type="bool" description="Learn pressed" short="LRNB" inverted="true" />
+		<Field offset="30" size="1" name="TSensor" type="bool" description="T-sensor" short="TSN" inverted="false" />
+	</Profile>
+
+	<Profile rorg="0xa5" func="0x02" type="0x05" rorgDescription="4BS Telegram" funcDescription="Temperature Sensor" typeDescription="Range 0°C to +40°C">
+		<Field offset="16" size="8" name="temperature" type="float" description="Temperature" short="TMP" shift="0" factor="0.156862745" />
+		<Field offset="28" size="1" name="learnMode" type="bool" description="Learn pressed" short="LRNB" inverted="true" />
+	</Profile>
+
+	<Profile rorg="0xa5" func="0x06" type="0x01" rorgDescription="4BS Telegram" funcDescription="Light Sensor" typeDescription="Range 300lx to 60.000lx">
+		<Field offset="0" size="8" name="voltage" type="float" description="Supply voltage" short="SVC" shift="0" factor="0.02" />
+		<Field offset="8" size="8" name="illumination2" type="float" description="Illumination 300-30000 lx" short="ILL2" shift="2.5757" factor="116.4706" />
+		<Field offset="16" size="8" name="illumination1" type="float" description="Illumination 600-60000 lx" short="ILL1" shift="2.5757" factor="232.9412" />
+		<Field offset="28" size="1" name="learnMode" type="bool" description="Learn pressed" short="LRNB" inverted="true" />
+		<Field offset="31" size="1" name="rangeSelect" type="int" description="RangeSelect" short="RS" shift="1" />
+	</Profile>
+
+	<Profile rorg="0xa5" func="0x09" type="0x04" rorgDescription="4BS Telegram" funcDescription="Gas Sensor" typeDescription="CO2 Sensor">
+		<Field offset="0" size="8" name="humidity" type="float" description="Humidity" short="HUM" shift="0" factor="0.5" />
+		<Field offset="8" size="8" name="concentration" type="float" description="Concentration" short="Conc" shift="0" factor="10" />
+		<Field offset="16" size="8" name="temperature" type="float" description="Temperature" short="TMP" shift="0" factor="0.2" />
+		<Field offset="28" size="1" name="learnMode" type="bool" description="Learn pressed" short="LRNB" inverted="true" />
+		<Field offset="29" size="1" name="HSensor" type="bool" description="H-sensor" short="HSN" inverted="false" />
+		<Field offset="30" size="1" name="TSensor" type="bool" description="T-sensor" short="TSN" inverted="false" />
+	</Profile>
+
+	<Profile rorg="0xa5" func="0x10" type="0x03" rorgDescription="4BS Telegram" funcDescription="Room Operating Panel" typeDescription="Temperature Sensor, Set Point Control">
+		<Field offset="8" size="8" name="setpoint" type="float" description="Set point" short="SP" shift="0" factor="0.157480315"/>
+		<Field offset="16" size="8" name="temperature" type="float" description="Temperature" short="TMP" shift="0" factor="0.3149606299" />
+		<Field offset="28" size="1" name="learnMode" type="bool" description="Learn pressed" short="LRNB" inverted="true" />
+	</Profile>
+
+	<Profile rorg="0xa5" func="0x10" type="0x05" rorgDescription="4BS Telegram" funcDescription="Room Operating Panel" typeDescription="Temperature Sensor, Set Point and Occupancy Control">
+		<Field offset="8" size="8" name="setpoint" type="int" description="Set point" short="SP" />
+		<Field offset="16" size="8" name="temperature" type="float" description="Temperature" short="TMP" shift="0" factor="0.156862745" />
+		<Field offset="28" size="1" name="learnMode" type="bool" description="Learn pressed" short="LRNB" inverted="true" />
+		<Field offset="31" size="1" name="occupancy" type="bool" description="Occupancy button" short="OCC" inverted="true" />
+	</Profile>
+
+	<Profile rorg="0xa5" func="0x10" type="0x0a" rorgDescription="4BS Telegram" funcDescription="Room Operating Panel" typeDescription="Temperature Sensor, Set Point Adjust and Single Input">
+		<Field offset="8" size="8" name="setpoint" type="int" description="Set point" short="SP" />
+		<Field offset="16" size="8" name="temperature" type="float" description="Temperature" short="TMP" shift="0" factor="0.156862745" />
+		<Field offset="28" size="1" name="learnMode" type="bool" description="Learn pressed" short="LRNB" inverted="true" />
+		<Field offset="31" size="1" name="contact" type="bool" description="Contact state" short="CTST" inverted="false" />
+	</Profile>
+
+	<!--
+	<Profile rorg="" func="" type="" rorgDescription="" funcDescription="" typeDescription="">
+		<Field offset="" size="" name="" type="" description="" short="" />
+	</Profile>
+	-->
+</Profiles>

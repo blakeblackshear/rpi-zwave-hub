@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<Defaults>
+	<Autoconfig>1</Autoconfig><!-- Set to 1 to automatically configure devices or 0 to leave them as is -->
+	<DeepInterview>1</DeepInterview><!-- Assume Interview done only after all Reports received from the CC -->
+	<SaveDataAfterInterviewSteps>1</SaveDataAfterInterviewSteps><!-- Save data to xxxxxxxx-DeviceData.xml after each Interview steps. Set to 0 on slow devices to fast up interview -->
+	<TryToBecomeSIS>1</TryToBecomeSIS><!-- Shall Z-Way try to become SIS -->
+	<SecureInterviewAsInclusionController>1</SecureInterviewAsInclusionController><!-- If 1 - Z-Way will initiate interview as Inclusion Controller, if 0 - only as Primary/SIS -->
+	<SecureInterviewAcceptedWithoutSchemeInherit>0</SecureInterviewAcceptedWithoutSchemeInherit><!-- If 1 - Z-Way will not fail secure inteview as secondary/inclusion controller if Scheme Inherit is not received, if 0 - fail interview as by Z-Wave protocol -->
+	<SecureAllCCs>0</SecureAllCCs><!-- Always use Security if possible (even for CCs allowed as non-secure) -->
+	<DeviceReplyTimeout>2</DeviceReplyTimeout><!-- Delay to wait (in seconds) for a device to reply with a REPORT on a GET command -->
+	<DeviceRelaxDelay>3</DeviceRelaxDelay><!-- Delay between two subsequent packets sent to one device, measured in ticks (~10 ms). Some slow devices might need about 10 to respond correctly to burst of packets -->
+	<SerialAPITimeout>0.0</SerialAPITimeout><!-- Extra time to be added to Serial API timouts. Set up to 1.0-3.0 sec in case of slow channel toward Z-Wave chip -->
+
+	<CommandClass><!-- Default CC settings for devices -->
+		<Wakeup>
+			<WakeupInterval>3600</WakeupInterval><!-- Default Wakeup Interval to set during AutoConfiguration. Value 0 means to use default value from the device -->
+			<KeepMeInformedInsteadOfSIS>1</KeepMeInformedInsteadOfSIS><!-- Set to 1 to assign Wakeup Notification to ourself or 0 to use SIS node instead as according to the protocol protocol -->
+		</Wakeup>
+		<SceneActuatorConf>
+			<MaxScenes>16</MaxScenes><!-- Maximum number of scenes to use -->
+		</SceneActuatorConf>
+		<SceneControllerConf>
+			<MaxScenes>16</MaxScenes><!-- Maximum number of scenes to use -->
+		</SceneControllerConf>
+		<Protection>
+	 		<Mode>0</Mode><!-- Default Protection Mode to set during AutoConfiguration -->
+	 	</Protection>
+	 	<SensorMultilevel>
+	 		<Fahrenheit>0</Fahrenheit><!-- Default scale to use -->
+	 	</SensorMultilevel>
+	 	<ThermostatSetPoint>
+	 		<Fahrenheit>0</Fahrenheit><!-- Default scale to use -->
+	 	</ThermostatSetPoint>
+	 	<SwitchAll>
+	 		<Mode>0</Mode><!-- Default SwichAll Mode to set during AutoConfiguration -->
+		</SwitchAll>
+		<MultiCmd>
+			<MaxNum>3</MaxNum><!-- Maximum number of commands per MultiCmd -->
+		</MultiCmd>
+		<FirmwareUpdate>
+			<FragmentSize>32</FragmentSize><!-- Fragment size on 3rd gen RaZberry and Z-Stick can not be more than 32 (max packet size was 37, with possible CRC it gives 32). On UZB and new 5gen it can be up to 40 bytes -->
+		</FirmwareUpdate>
+	</CommandClass>
+	<Controller>
+		<!-- Make sure to list more important first in case broken stick is used that support only 6 Command Classes -->
+		<!-- Controllers own NIF -->
+		<NodeInformationFrame>
+			"ZWavePlusInfo"
+			"Version"
+			"MultiChannel"
+			"MultiCmd"
+			"Clock" <!-- for Danfoss must be in first 6 in case broken Sigma dongle is used -->
+			"ClimateControlSchedule" <!-- for Danfoss must be in first 6 in case broken Sigma dongle is used -->
+			"Security"
+			"SwitchMultilevel"
+			"SwitchBinary"
+			"ManufacturerSpecific"
+			"Time"
+			"SceneActivation"
+			"NodeNaming"
+			"ApplicationStatus"
+			"CentralScene"
+			"CRC16"
+			"PowerLevel"
+			"Association"
+			"AssociationGroupInformation"
+			"MultiChannelAssociation"
+			"DeviceResetLocally"
+		</NodeInformationFrame>
+		<!-- Controllers own NIF reported under Security -->
+		<!-- CCs inside Secure NIF MUST be in ordinary NIF too -->
+		<!-- Z-Way does not support Secure only CCs yet -->
+		<SecureNodeInformationFrame>
+			"MultiChannel"
+			"Clock"
+			"MultiCmd"
+			"SwitchMultilevel"
+			"SwitchBinary"
+			"Time"
+			"SceneActivation"
+			"ApplicationStatus"
+			"CentralScene"
+			"Version"
+			"ManufacturerSpecific"
+		</SecureNodeInformationFrame>
+
+		<CommandClassSupportedVersion>
+			<Basic>1</Basic>
+			<ApplicationStatus>1</ApplicationStatus>
+			<SwitchBinary>1</SwitchBinary>
+			<SwitchMultilevel>1</SwitchMultilevel>
+			<ManufacturerSpecific>2</ManufacturerSpecific>
+			<Clock>1</Clock>
+			<MultiChannel>4</MultiChannel>
+			<Version>2</Version>
+			<MultiCmd>1</MultiCmd>
+			<NodeNaming>1</NodeNaming>
+			<Time>2</Time>
+			<SceneActivation>1</SceneActivation>
+			<ClimateControlSchedule>1</ClimateControlSchedule>
+			<CentralScene>1</CentralScene>
+			<ZWavePlusInfo>2</ZWavePlusInfo>
+			<Security>1</Security>
+			<CRC16>1</CRC16>
+			<Association>2</Association>
+			<AssociationGroupInformation>1</AssociationGroupInformation>
+			<MultiChannelAssociation>3</MultiChannelAssociation>
+			<PowerLevel>1</PowerLevel>
+			<DeviceResetLocally>1</DeviceResetLocally>
+		</CommandClassSupportedVersion>
+
+		<Name>Gateway</Name><!-- Default Node Name of Controller -->
+		<Location>Main Room</Location><!-- Default Node Location of Controller -->
+		<AppVersion><!-- Version of Z-Way reported by Version CC -->
+			<Major>2</Major>
+			<Minor>3</Minor>
+		</AppVersion>
+		<HardwareVersion>1</HardwareVersion>
+		<HostAppVersion><!-- Version of Host OS reported by Version CC -->
+			<Major>1</Major>
+			<Minor>0</Minor>
+		</HostAppVersion>
+		<ManufacturerSpecific><!-- Manufacturer info reported by ManufacturerSpcific CC -->
+			<VendorID>277</VendorID>
+			<ProductID>1</ProductID>
+			<ProductTypeID>1</ProductTypeID>
+		</ManufacturerSpecific>
+		<SpecificDeviceClass>1</SpecificDeviceClass><!-- Controllers own Specific Device Class 1 = Static PC Controller -->
+		<GenericDeviceClass>2</GenericDeviceClass><!-- Controllers own Generic Device Class 2 = Static Controller -->
+		<Icons><!-- Icons for Z-Wave Plus Information CC -->
+			<InstallerIcon>256</InstallerIcon>
+			<UserIcon>256</UserIcon>
+		</Icons>
+		<Lifeline>
+			<MaxNodes>3</MaxNodes>
+		</Lifeline>
+		<Channels>
+			<Number>16</Number><!-- Number of Channels simulated for event handling -->
+			<!-- Controllers instances capabilities -->
+			<NodeInformationFrame>
+				"SwitchBinary"
+				"SwitchMultilevel"
+				"SceneActivation"
+				"CentralScene"
+			</NodeInformationFrame>
+			<GenericDeviceClass>17</GenericDeviceClass><!-- Generic Device Class of simulated Channel -->
+			<SpecificDeviceClass>1</SpecificDeviceClass><!-- Specific Device Class of simulated Channel -->
+			<Icons><!-- Icons for Z-Wave Plus Information CC -->
+				<InstallerIcon>1536</InstallerIcon>
+				<UserIcon>1536</UserIcon>
+			</Icons>
+		</Channels>
+	</Controller>
+</Defaults>
