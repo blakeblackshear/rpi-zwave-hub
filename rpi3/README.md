@@ -1,7 +1,7 @@
 
 # Customize HypriotOS
 
-- Flash Hypriot to SD card
+- Flash Hypriot 1.9.0 to SD card
 - Replace user-data
 - Replace config.txt
 - Replace cmdline.txt

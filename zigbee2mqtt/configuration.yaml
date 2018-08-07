@@ -1,0 +1,15 @@
+# MQTT settings
+mqtt:
+  # MQTT base topic for zigbee2mqtt MQTT messages
+  base_topic: zigbee
+  # MQTT server URL
+  server: 'mqtt://mqtt.blakeshome.com'
+  # MQTT server authentication, uncomment if required:
+  # user: my_user
+  # password: my_password
+
+permit_join: false
+
+serial:
+  # Required: location of CC2531 USB sniffer
+  port: /dev/ttyACM0

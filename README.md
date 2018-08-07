@@ -1,11 +1,10 @@
 # DIY Zwave hub based on RPi3 and Razberry
 Work in progress
 
-# TODO
-- make fs read only
-
 # Running
 - docker-compose up -d
+
+# logrotate needs to run more often
 
 Make sure frequency is set to US
 ```

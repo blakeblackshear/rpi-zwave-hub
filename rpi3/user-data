@@ -8,7 +8,7 @@
 # Documentation: http://cloudinit.readthedocs.io/en/0.7.9/index.html
 
 # Set your hostname here, the manage_etc_hosts will update the hosts file entries as well
-hostname: razberry
+hostname: zhub
 manage_etc_hosts: true
 
 # You could modify this for your own user information
@@ -17,7 +17,8 @@ users:
     sudo: ALL=(ALL) NOPASSWD:ALL
     shell: /bin/bash
     groups: users,docker,video,input,dialout,tty
-    ssh-import-id: None
+    # ssh-import-id:
+    #   - gh:blakeblackshear
     lock_passwd: true
     ssh-authorized-keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrOJ0dRoMpSrSb9pQhd6bzFzoMpCKsBU2z1NlwEgR1zB5kQoE27fJ9csrncLod2lp5MhUWxGi8ar2HtNTjcGZUGV5vtt7DyR5F2nEgdhJF7MbJaSdThzjUPKQUW6xoQuo09+8KsHnjGwTsjV/hepg+WzkKOfrk2EuxDqhSxvM8X2meSyxPFN6yrAU8yc0WTbZ/IoLhgXuGfkQ8TK301XclFF3BWQSLKST1qZFkJEDfwV+H3E+TI4ec7ljj2uz+rgqLhPv5ia/Nv3GLDKFaSuWmaIpr/zn+U2eWv89BpvXp1AmIGJGbukgbRiGrHR4Sft7hKqx0fug/KXacck1gbczJ blake@Blakes-MacBook-Pro.local
@@ -30,13 +31,10 @@ users:
 timezone: "America/Chicago"
 
 # # Update apt packages on first boot
-package_update: true
-package_upgrade: true
-package_reboot_if_required: true
-
-# # Install any additional apt packages you need here
-packages:
- - ntp
+# # Fails to run for some reason
+# package_update: true
+# package_upgrade: true
+# package_reboot_if_required: true
 
 # These commands will be ran once on first boot only
 runcmd:
@@ -45,9 +43,59 @@ runcmd:
   # Disable bluetooth
   - 'systemctl disable hciuart'
 
+# reduce writes to sd card by only writing logs to tmpfs
+mounts:
+  - [tmpfs, /var/tmp, tmpfs, "nodev,nosuid,size=50M", "0", "0"]
+  - [tmpfs, /var/log, tmpfs, "nodev,nosuid,size=50M", "0", "0"]
+
 write_files:
-    - content: |
-        # Spawn a getty on Raspberry Pi serial line
-        # T0:23:respawn:/sbin/getty -L ttyAMA0 115200 vt100
-      path: /etc/inittab
+  # stop os from using serial port
+  - content: |
+      # Spawn a getty on Raspberry Pi serial line
+      # T0:23:respawn:/sbin/getty -L ttyAMA0 115200 vt100
+    path: /etc/inittab
+  # set aggressive log rotation to keep tmpfs drives from filling
+  - content: |
+      /var/log/syslog
+      {
+        rotate 7
+        daily
+        missingok
+        notifempty
+        delaycompress
+        compress
+        minsize 500k
+        maxsize 2M
+        postrotate
+          invoke-rc.d rsyslog rotate > /dev/null
+        endscript
+      }
+
+      /var/log/mail.info
+      /var/log/mail.warn
+      /var/log/mail.err
+      /var/log/mail.log
+      /var/log/daemon.log
+      /var/log/kern.log
+      /var/log/auth.log
+      /var/log/user.log
+      /var/log/lpr.log
+      /var/log/cron.log
+      /var/log/debug
+      /var/log/messages
+      {
+        rotate 4
+        weekly
+        missingok
+        notifempty
+        compress
+        minsize 500k
+        maxsize 2M
+        delaycompress
+        sharedscripts
+        postrotate
+          invoke-rc.d rsyslog rotate > /dev/null
+        endscript
+      }
+    path: /etc/logrotate.d/rsyslog
 

@@ -50,6 +50,7 @@
 			"name": "zway",
 			"port": "/dev/ttyAMA0",
 			"enableAPI": true,
+			"enableRSSI": false,
 			"publicAPI": false,
 			"createVDev": true,
 			"config": "config",

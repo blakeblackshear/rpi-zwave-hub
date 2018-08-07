@@ -2,8 +2,6 @@ version: "3"
 services:
   zway:
     container_name: zway
-    restart: always
-    read_only: true
     logging:
       driver: journald
     build:
@@ -11,9 +9,21 @@ services:
     environment:
       TZ: "America/Chicago"
     volumes:
-      - ./zway/storage:/opt/z-way-server/automation/storage/
-      - ./zway/config:/opt/z-way-server/config/
+      - zway:/opt/z-way-server/
     ports:
       - "127.0.0.1:8083:8083"
     devices:
       - "/dev/ttyAMA0:/dev/ttyAMA0"
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    image: koenkk/zigbee2mqtt:arm32v6
+    logging:
+      driver: journald
+    environment:
+      TZ: "America/Chicago"
+    volumes:
+      - ./zigbee2mqtt:/app/data
+    devices:
+      - "/dev/ttyACM0:/dev/ttyACM0"
+volumes:
+  zway:

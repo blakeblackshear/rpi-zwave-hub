@@ -23,14 +23,45 @@ RUN curl -SLO https://razberry.z-wave.me/z-way-server/z-way-server-RaspberryPiXT
   && tar -zxvf z-way-server-RaspberryPiXTools-v${ZWAY_VERSION}.tgz -C /opt \
   && rm z-way-server-RaspberryPiXTools-v${ZWAY_VERSION}.tgz
 
+# extract custom automation source code to /opt/z-way-server/blakeshome
+RUN curl -SLO https://github.com/blakeblackshear/home-automation/archive/v2.3.6-custom.tar.gz \
+  && tar -zxvf v2.3.6-custom.tar.gz -C /opt/z-way-server \
+  && mv /opt/z-way-server/home-automation-2.3.6-custom /opt/z-way-server/blakeshome \
+  && rm v2.3.6-custom.tar.gz
+
+# install basemodule
+RUN curl -SLO https://github.com/maros/Zway-BaseModule/archive/1.10.tar.gz \
+  && tar -zxvf 1.10.tar.gz -C /opt/z-way-server/blakeshome/userModules \
+  && mv /opt/z-way-server/blakeshome/userModules/Zway-BaseModule-1.10 /opt/z-way-server/blakeshome/userModules/BaseModule \
+  && rm 1.10.tar.gz
+
+# install websocket bridge
+RUN curl -SLO https://github.com/blakeblackshear/zway-websocket/archive/v0.0.2.tar.gz \
+  && tar -zxvf v0.0.2.tar.gz -C /opt/z-way-server/blakeshome/userModules \
+  && mv /opt/z-way-server/blakeshome/userModules/zway-websocket-0.0.2 /opt/z-way-server/blakeshome/userModules/WebSockets \
+  && rm v0.0.2.tar.gz
+
+# install cooper scene controllers
+RUN curl -SLO https://github.com/blakeblackshear/zway-cooper-scene-controllers/archive/v0.0.1.tar.gz \
+  && tar -zxvf v0.0.1.tar.gz -C /opt/z-way-server/blakeshome/userModules \
+  && mv /opt/z-way-server/blakeshome/userModules/zway-cooper-scene-controllers-0.0.1 /opt/z-way-server/blakeshome/userModules/CooperSceneControllers \
+  && rm v0.0.1.tar.gz
+
+# install niffler
+RUN curl -SLO https://github.com/blakeblackshear/Niffler/archive/v0.0.1.tar.gz \
+  && tar -zxvf v0.0.1.tar.gz -C /opt/z-way-server/blakeshome/userModules \
+  && mv /opt/z-way-server/blakeshome/userModules/Niffler-0.0.1 /opt/z-way-server/blakeshome/userModules/Niffler \
+  && rm v0.0.1.tar.gz
+
+# default the UI to expert
+COPY htdocs/index.html /opt/z-way-server/htdocs/index.html
+
 RUN mkdir -p /etc/z-way \
     && echo "v2.3.6" > /etc/z-way/VERSION \
     && echo "razberry" > /etc/z-way/box_type
 
 COPY config.xml /opt/z-way-server/config.xml
-
-# TODO: Add Niffler, MQTT Plugin, Disable auth
-
+COPY storage/configjson-06b2d3b23dce96e1619d2b53d6c947ec.json /opt/z-way-server/blakeshome/storage/configjson-06b2d3b23dce96e1619d2b53d6c947ec.json
 EXPOSE 8083
 
 WORKDIR /opt/z-way-server

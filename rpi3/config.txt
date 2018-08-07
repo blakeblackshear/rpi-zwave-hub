@@ -1,4 +1,5 @@
 hdmi_force_hotplug=1
+# enable uart for razberry
 enable_uart=1
 
 # camera settings, see http://elinux.org/RPiconfig#Camera
@@ -10,5 +11,5 @@ gpu_mem=16
 # Enable audio (added by raspberrypi-sys-mods)
 dtparam=audio=on
 
-# Disable bluetooth
+# Disable bluetooth to avoid razberry conflict
 dtoverlay=pi3-disable-bt
