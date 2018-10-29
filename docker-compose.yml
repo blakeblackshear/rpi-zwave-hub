@@ -1,21 +1,8 @@
 version: "3"
 services:
-  zway:
-    container_name: zway
-    logging:
-      driver: journald
-    build:
-      context: zway
-    environment:
-      TZ: "America/Chicago"
-    volumes:
-      - zway:/opt/z-way-server/
-    ports:
-      - "127.0.0.1:8083:8083"
-    devices:
-      - "/dev/ttyAMA0:/dev/ttyAMA0"
   zigbee2mqtt:
     container_name: zigbee2mqtt
+    restart: unless-stopped
     image: koenkk/zigbee2mqtt:arm32v6
     logging:
       driver: journald
@@ -25,5 +12,17 @@ services:
       - ./zigbee2mqtt:/app/data
     devices:
       - "/dev/ttyACM0:/dev/ttyACM0"
-volumes:
-  zway:
+  homeassistant:
+    container_name: hass
+    image: homeassistant/raspberrypi3-homeassistant:0.80.3
+    restart: unless-stopped
+    logging:
+      driver: journald
+    volumes:
+      - ./homeassistant:/config
+    ports:
+      - "8123:8123"
+    environment:
+      TZ: "America/Chicago"
+    devices:
+      - "/dev/ttyAMA0:/dev/ttyAMA0"

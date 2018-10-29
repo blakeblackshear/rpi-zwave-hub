@@ -1,0 +1,19 @@
+version: "3"
+services:
+  zway:
+    container_name: zway
+    restart: unless-stopped
+    logging:
+      driver: journald
+    build:
+      context: zway
+    environment:
+      TZ: "America/Chicago"
+    volumes:
+      - zway:/opt/z-way-server/
+    ports:
+      - "127.0.0.1:8083:8083"
+    devices:
+      - "/dev/ttyAMA0:/dev/ttyAMA0"
+volumes:
+  zway:
