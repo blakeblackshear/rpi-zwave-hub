@@ -36,10 +36,10 @@ RUN curl -SLO https://github.com/maros/Zway-BaseModule/archive/1.10.tar.gz \
   && rm 1.10.tar.gz
 
 # install websocket bridge
-RUN curl -SLO https://github.com/blakeblackshear/zway-websocket/archive/v0.0.2.tar.gz \
-  && tar -zxvf v0.0.2.tar.gz -C /opt/z-way-server/blakeshome/userModules \
-  && mv /opt/z-way-server/blakeshome/userModules/zway-websocket-0.0.2 /opt/z-way-server/blakeshome/userModules/WebSockets \
-  && rm v0.0.2.tar.gz
+RUN curl -SLO https://github.com/blakeblackshear/zway-websocket/archive/v0.0.4.tar.gz \
+  && tar -zxvf v0.0.4.tar.gz -C /opt/z-way-server/blakeshome/userModules \
+  && mv /opt/z-way-server/blakeshome/userModules/zway-websocket-0.0.4 /opt/z-way-server/blakeshome/userModules/WebSockets \
+  && rm v0.0.4.tar.gz
 
 # install cooper scene controllers
 RUN curl -SLO https://github.com/blakeblackshear/zway-cooper-scene-controllers/archive/v0.0.1.tar.gz \
