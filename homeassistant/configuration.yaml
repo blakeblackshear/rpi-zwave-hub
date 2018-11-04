@@ -43,9 +43,6 @@ mqtt_control:
   base_topic: homeassistant_hub/
 
 cooper_controllers:
-  controllers:
-    - node_id: 14
-      indicator: sensor.back_panel_indicator
 
 python_script:
 
@@ -87,91 +84,3 @@ automation:
           node_id: "{{ state_attr(trigger.event.data.service_data.entity_id,'node_id') }}"
           value_id: "{{ state_attr(trigger.event.data.service_data.entity_id,'value_id') }}"
           delay: 4
-      # - service: zwave.refresh_node_value
-      #   data_template:
-      #     node_id: "{{ state_attr(trigger.event.data.service_data.entity_id,'node_id') }}"
-      #     value_id: "{{ state_attr(trigger.event.data.service_data.entity_id,'value_id') }}"
-  - alias: Sync the indicator value on button events
-    trigger:
-      - platform: event
-        event_type: zwave.node_event
-        event_data:
-          entity_id: zwave.back_panel
-    action:
-      - service: zwave.refresh_node_value
-        data_template: 
-          node_id: 14
-          value_id: "{{ state_attr('sensor.back_panel_indicator','value_id') }}"
-switch:
-  - platform: template
-    switches:
-      back_panel_button_1_led:
-        value_template: "{{ states('sensor.back_panel_indicator')|int|bitwise_and(1) > 0 }}"
-        turn_on:
-          service: zwave.set_node_value
-          data_template:
-            node_id: 14
-            value_id: "{{ state_attr('sensor.back_panel_indicator','value_id') }}"
-            value: "{{ states('sensor.back_panel_indicator')|int + 1 }}"
-        turn_off:
-          service: zwave.set_node_value
-          data_template:
-            node_id: 14
-            value_id: "{{ state_attr('sensor.back_panel_indicator','value_id') }}"
-            value: "{{ states('sensor.back_panel_indicator')|int - 1 }}"
-      back_panel_button_2_led:
-        value_template: "{{ states('sensor.back_panel_indicator')|int|bitwise_and(2) > 0 }}"
-        turn_on:
-          service: zwave.set_node_value
-          data_template:
-            node_id: 14
-            value_id: "{{ state_attr('sensor.back_panel_indicator','value_id') }}"
-            value: "{{ states('sensor.back_panel_indicator')|int + 2 }}"
-        turn_off:
-          service: zwave.set_node_value
-          data_template:
-            node_id: 14
-            value_id: "{{ state_attr('sensor.back_panel_indicator','value_id') }}"
-            value: "{{ states('sensor.back_panel_indicator')|int - 2 }}"
-      back_panel_button_3_led:
-        value_template: "{{ states('sensor.back_panel_indicator')|int|bitwise_and(4) > 0 }}"
-        turn_on:
-          service: zwave.set_node_value
-          data_template:
-            node_id: 14
-            value_id: "{{ state_attr('sensor.back_panel_indicator','value_id') }}"
-            value: "{{ states('sensor.back_panel_indicator')|int + 4 }}"
-        turn_off:
-          service: zwave.set_node_value
-          data_template:
-            node_id: 14
-            value_id: "{{ state_attr('sensor.back_panel_indicator','value_id') }}"
-            value: "{{ states('sensor.back_panel_indicator')|int - 4 }}"
-      back_panel_button_4_led:
-        value_template: "{{ states('sensor.back_panel_indicator')|int|bitwise_and(8) > 0 }}"
-        turn_on:
-          service: zwave.set_node_value
-          data_template:
-            node_id: 14
-            value_id: "{{ state_attr('sensor.back_panel_indicator','value_id') }}"
-            value: "{{ states('sensor.back_panel_indicator')|int + 8 }}"
-        turn_off:
-          service: zwave.set_node_value
-          data_template:
-            node_id: 14
-            value_id: "{{ state_attr('sensor.back_panel_indicator','value_id') }}"
-            value: "{{ states('sensor.back_panel_indicator')|int - 8 }}"
-      back_panel_button_5_led:
-        value_template: "{{ states('sensor.back_panel_indicator')|int|bitwise_and(16) > 0 }}"
-        turn_on:
-          service: zwave.set_node_value
-          data_template:
-            node_id: 14
-            value_id: "{{ state_attr('sensor.back_panel_indicator','value_id') }}"
-            value: "{{ states('sensor.back_panel_indicator')|int + 16 }}"
-        turn_off:
-          service: zwave.set_node_value
-          data_template:
-            node_id: 14
-            value_id: "{{ state_attr('sensor.back_panel_indicator','value_id') }}"
-            value: "{{ states('sensor.back_panel_indicator')|int - 16 }}"

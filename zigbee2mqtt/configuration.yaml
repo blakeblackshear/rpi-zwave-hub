@@ -9,6 +9,7 @@ mqtt:
   # password: my_password
 
 permit_join: false
+homeassistant: true
 
 serial:
   # Required: location of CC2531 USB sniffer
