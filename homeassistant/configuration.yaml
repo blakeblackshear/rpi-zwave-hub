@@ -1,6 +1,7 @@
 homeassistant:
   name: ZHub
   time_zone: America/Chicago
+  packages: !include_dir_named packages
 
 # Enables the frontend
 frontend:
