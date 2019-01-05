@@ -62,16 +62,6 @@ automation:
         topic: homeassistant_hub/status
         payload: 'offline'
         retain: true
-  - alias: Broadcast zwave.scene_activated events over MQTT
-    trigger:
-      - platform: event
-        event_type: zwave.scene_activated
-    action:
-      - service: mqtt.publish
-        data_template:
-          topic: homeassistant_hub/events
-          payload: "{{trigger.event.data|tojson}}"
-          retain: false
   - alias: Refresh light values after 4 seconds
     trigger:
       - platform: event
@@ -79,11 +69,6 @@ automation:
         event_data:
           domain: light
     action:
-      - service: mqtt.publish
-        data_template:
-          topic: homeassistant_hub/testing
-          payload: "refreshing {{ state_attr(trigger.event.data.service_data.entity_id,'node_id') }}"
-          retain: false
       - service: python_script.delay_node_value_refresh
         data_template:
           node_id: "{{ state_attr(trigger.event.data.service_data.entity_id,'node_id') }}"
