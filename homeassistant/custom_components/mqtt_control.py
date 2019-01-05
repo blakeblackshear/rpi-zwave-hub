@@ -1,8 +1,5 @@
 """
-Publish simple item state changes via MQTT.
-
-For more details about this component, please refer to the documentation at
-https://home-assistant.io/components/mqtt_statestream/
+Allow devices to be controlled as generic MQTT components.
 """
 import json
 
@@ -12,10 +9,12 @@ from homeassistant.const import (CONF_DOMAINS, CONF_ENTITIES, CONF_EXCLUDE,
                                  CONF_INCLUDE, MATCH_ALL, SERVICE_TURN_ON, 
                                  SERVICE_TURN_OFF, ATTR_ENTITY_ID, SERVICE_LOCK,
                                  SERVICE_UNLOCK)
+from homeassistant.components.zwave.const import (EVENT_NETWORK_COMPLETE, 
+    EVENT_NETWORK_READY, EVENT_NETWORK_COMPLETE_SOME_DEAD)
 from homeassistant.core import callback
 from homeassistant.components import mqtt
 from homeassistant.helpers.entityfilter import generate_filter
-from homeassistant.helpers.event import async_track_state_change
+from homeassistant.helpers.event import async_track_state_change, async_call_later
 from homeassistant.helpers.json import JSONEncoder
 import homeassistant.helpers.config_validation as cv
 from homeassistant.loader import bind_hass
@@ -43,7 +42,7 @@ CONFIG_SCHEMA = vol.Schema({
 }, extra=vol.ALLOW_EXTRA)
 
 
-async def async_setup(hass, config):
+def setup(hass, config):
     """Set up the MQTT state feed."""
     conf = config.get(DOMAIN, {})
     base_topic = conf.get(CONF_BASE_TOPIC)
@@ -56,8 +55,16 @@ async def async_setup(hass, config):
 
     if not base_topic.endswith('/'):
         base_topic = base_topic + '/'
+    
+    def _publish_all_states(*_):
+        states = hass.states.all()
+        for state in states:
+            _state_publisher(state.entity_id, None, state)
 
-    @callback
+    def _handle_hass_status(topic, payload, qos):
+        if payload == 'online':
+            async_call_later(hass, 20, _publish_all_states)
+
     def _state_publisher(entity_id, old_state, new_state):
         if new_state is None:
             return
@@ -67,16 +74,19 @@ async def async_setup(hass, config):
 
         entity_id_parts = entity_id.split('.')
         domain = entity_id_parts[0]
+        entity_state = hass.states.get(entity_id)
 
         mybase = base_topic + entity_id.replace('.', '/') + '/state'
 
         if domain == 'switch' or domain == 'binary_sensor':
-            payload = None
+            data = {}
             if new_state.state == 'on':
-                payload = 'ON'
+                data['state'] = 'ON'
             elif new_state.state == 'off':
-                payload = 'OFF'
-            hass.components.mqtt.async_publish(mybase, payload, 1, True)
+                data['state'] = 'OFF'
+
+            payload = json.dumps(data, cls=JSONEncoder)
+            hass.components.mqtt.async_publish(mybase, payload, 1, False)
         elif domain == 'light':
             data = {}
             if new_state.state == 'on':
@@ -87,19 +97,34 @@ async def async_setup(hass, config):
                 data['brightness'] = new_state.attributes['brightness']
             except KeyError:
                 pass
-            payload = json.dumps(data, cls=JSONEncoder)
-            hass.components.mqtt.async_publish(mybase, payload, 1, True)
-        elif domain == 'lock':
-            payload = None
-            if new_state.state == 'locked':
-                payload = 'LOCK'
-            elif new_state.state == 'unlocked':
-                payload = 'UNLOCK'
-            hass.components.mqtt.async_publish(mybase, payload, 1, True)
-        elif domain == 'sensor':
-            hass.components.mqtt.async_publish(mybase, new_state.state, 1, True)
 
-    @callback
+            payload = json.dumps(data, cls=JSONEncoder)
+            hass.components.mqtt.async_publish(mybase, payload, 1, False)
+        elif domain == 'lock':
+            data = {}
+            if new_state.state == 'locked':
+                data['state'] = 'LOCK'
+            elif new_state.state == 'unlocked':
+                data['state'] = 'UNLOCK'
+            
+            try:
+                data['notification'] = entity_state.attributes['notification']
+            except KeyError:
+                pass
+            try:
+                data['lock_status'] = entity_state.attributes['lock_status']
+            except KeyError:
+                pass
+
+            payload = json.dumps(data, cls=JSONEncoder)
+            hass.components.mqtt.async_publish(mybase, payload, 1, False)
+        elif domain == 'sensor':
+            data = {}
+            data['state'] = new_state.state
+
+            payload = json.dumps(data, cls=JSONEncoder)
+            hass.components.mqtt.async_publish(mybase, payload, 1, False)
+
     def _state_message_received(topic, payload, qos):
         """Handle new MQTT state messages."""
         # Parse entity from topic
@@ -135,5 +160,6 @@ async def async_setup(hass, config):
                 hass.async_add_job(hass.services.async_call(domain, SERVICE_UNLOCK, data))
     
     async_track_state_change(hass, MATCH_ALL, _state_publisher)
-    await mqtt.async_subscribe(hass, base_topic+'+/+/set', _state_message_received)
+    mqtt.subscribe(hass, base_topic+'+/+/set', _state_message_received)
+    mqtt.subscribe(hass, 'hass/status', _handle_hass_status)
     return True

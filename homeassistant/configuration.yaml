@@ -37,6 +37,14 @@ mqtt:
 
 mqtt_control:
   base_topic: homeassistant_hub/
+  include:
+    entities:
+      - sensor.back_door_lock_battery
+      - sensor.front_door_lock_battery
+    domains:
+      - light
+      - switch
+      - lock
 
 cooper_controllers:
 
