@@ -111,6 +111,10 @@ class CooperControllerSwitch(SwitchDevice):
             "value_id": indicator_state.attributes['value_id'],
             "value": indicator_value + BUTTON_VALUES[self._button]
         }
+        # set the indicator value ahead of time to ensure turning on or off a different switch doesn't
+        # reset the indicator value. 
+        self.hass.states.set(self._indicator_entity_id, data['value'], indicator_state.attributes)
+        # actually set the indicator value
         self.hass.async_add_job(self.hass.services.async_call('zwave', SERVICE_SET_NODE_VALUE, data))
 
     def turn_off(self, **kwargs):
@@ -126,4 +130,8 @@ class CooperControllerSwitch(SwitchDevice):
             "value_id": indicator_state.attributes['value_id'],
             "value": indicator_value - BUTTON_VALUES[self._button]
         }
+        # set the indicator value ahead of time to ensure turning on or off a different switch doesn't
+        # reset the indicator value. 
+        self.hass.states.set(self._indicator_entity_id, data['value'], indicator_state.attributes)
+        # actually set the indicator value
         self.hass.async_add_job(self.hass.services.async_call('zwave', SERVICE_SET_NODE_VALUE, data))
