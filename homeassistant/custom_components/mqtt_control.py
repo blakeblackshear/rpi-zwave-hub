@@ -18,8 +18,8 @@ from homeassistant.helpers.event import async_track_state_change, async_call_lat
 from homeassistant.helpers.json import JSONEncoder
 import homeassistant.helpers.config_validation as cv
 from homeassistant.loader import bind_hass
-import homeassistant.components.switch.mqtt as mqtt_switch
-import homeassistant.components.lock.mqtt as mqtt_lock
+import homeassistant.components.mqtt.switch as mqtt_switch
+import homeassistant.components.mqtt.lock as mqtt_lock
 
 CONF_BASE_TOPIC = 'base_topic'
 DEPENDENCIES = ['mqtt']

@@ -14,7 +14,7 @@ services:
       - "/dev/ttyACM0:/dev/ttyACM0"
   homeassistant:
     container_name: hass
-    image: homeassistant/raspberrypi3-homeassistant:0.80.3
+    image: homeassistant/raspberrypi3-homeassistant:0.88.2
     restart: unless-stopped
     logging:
       driver: journald
