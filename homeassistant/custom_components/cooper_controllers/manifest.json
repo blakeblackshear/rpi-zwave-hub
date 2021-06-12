@@ -1,0 +1,11 @@
+{
+    "codeowners": ["@blakeblackshear"],
+    "dependencies": [],
+    "documentation": "https://github.com/blakeblackshear/rpi-zwave-hub/tree/master/homeassistant/custom_components/cooper_controllers",
+    "domain": "cooper_controllers",
+    "iot_class": "local_polling",
+    "issue_tracker": "https://github.com/blakeblackshear/rpi-zwave-hub/issues",
+    "name": "cooper_controllers",
+    "requirements": [],
+    "version": "88.2"
+}
