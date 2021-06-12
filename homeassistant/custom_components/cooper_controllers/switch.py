@@ -2,7 +2,7 @@
 import datetime
 import logging
 
-from homeassistant.components.switch import SwitchDevice
+from homeassistant.components.switch import SwitchEntity
 from homeassistant.components.zwave.const import SERVICE_SET_NODE_VALUE, SERVICE_REFRESH_NODE_VALUE
 from homeassistant.helpers.event import async_track_state_change, async_call_later
 
@@ -32,7 +32,7 @@ def setup_platform(hass, config, add_entities, discovery_info=None):
     add_entities(switches)
 
 
-class CooperControllerSwitch(SwitchDevice):
+class CooperControllerSwitch(SwitchEntity):
     """A Cooper Controller button."""
 
     def __init__(self, node_id, controller, button):
